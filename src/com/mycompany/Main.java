@@ -3,10 +3,12 @@ package com.mycompany;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main extends JFrame{
 
-    JColorChooser colorChooser;
+    JButton colorChooser;
     JPanel panel;
     Draw draw;
     Color color;
@@ -23,22 +25,35 @@ public class Main extends JFrame{
         this.setTitle("Complementary color");
 
         panel = new JPanel();
+
+        JLabel label = new JLabel("Chosen color");
+
+
         draw = new Draw(color);
-        colorChooser = new JColorChooser(Color.BLACK);
-        colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
+        colorChooser = new JButton();
+
+        ImageIcon butIcon = new ImageIcon("C:\\Users\\Karol_Hajduk\\IdeaProjects\\Complementary_Color\\color.png");
+        Image img = butIcon.getImage();
+        Image newimg = img.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ;
+        butIcon = new ImageIcon( newimg );
+
+        colorChooser.setIcon(butIcon);
+        colorChooser.addActionListener(new ActionListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
-                color = colorChooser.getColor();
+            public void actionPerformed(ActionEvent e) {
+                color = JColorChooser.showDialog(null, "Pick your color", Color.BLACK);
                 draw.setColor(color);
-                draw.revalidate();
+
+                //draw.revalidate();
                 draw.repaint();
             }
         });
-        panel.add(colorChooser);
 
+        panel.add(colorChooser, BorderLayout.NORTH);
+        panel.add(label, BorderLayout.CENTER);
 
+        this.add(panel, BorderLayout.NORTH);
         this.add(draw, BorderLayout.CENTER);
-        this.add(panel, BorderLayout.PAGE_END);
         this.setVisible(true);
     }
 }
